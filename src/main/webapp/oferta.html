@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>oferta biura</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    </head>
+    <body>
+        <div id="menu"></div>
+        <script src="menu.js"></script>
+        <div id="main">      
+        </div>
+        
+        <script>
+            function loadTours() {
+                $.getJSON('resources/tours/list', function (data) {
+                    var mainDiv = document.getElementById("main"); 
+                    $.each(data, function(i, tour) {
+                        $('<div>').attr('id', "tour").appendTo(mainDiv);
+                        var tourDiv = mainDiv.lastChild;
+                        $('<h1>').text(tour.name).appendTo(tourDiv); 
+                        $('<p>').text("lokacja: " + tour.location).appendTo(tourDiv);
+                        $('<p>').text("cena: " + tour.price + " zł").appendTo(tourDiv);
+                        var moreInfo = false;
+                        $('<div>').text("Wyświetl więcej informacji").attr('id', tour.id).appendTo(tourDiv).click(function(){
+                            if (moreInfo){
+                                moreInfo = false;
+                                console.log("." + tour.id);
+                                $("." + tour.id).remove();
+                                $("#" + tour.id).text("Wyświetl więcej informacji");
+                            } else {
+                                moreInfo = true;
+                                $("#" + tour.id).text("Schowaj więcej informacji");
+                                $('<div>').attr('class', tour.id).appendTo(this);
+                                var divId = document.getElementsByClassName(tour.id);
+                                $('<p>').text(tour.description).attr('class', tour.id).appendTo(divId);
+                            }
+                        });  
+                    });
+                });
+            }
+            // id="tour"
+            $(document).ready(function(){
+               loadTours(); 
+            });
+        </script>
+    </body>
+</html>
