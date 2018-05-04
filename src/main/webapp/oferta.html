@@ -22,10 +22,9 @@ and open the template in the editor.
         <script>
             function loadTours() {
                 $.getJSON('resources/tours/list', function (data) {
-                    var mainDiv = document.getElementById("main"); 
                     $.each(data, function(i, tour) {
-                        $('<div>').attr('id', "tour").appendTo(mainDiv);
-                        var tourDiv = mainDiv.lastChild;
+                        $('<div>').attr('id', "tour").appendTo($('div#main'));
+                        var tourDiv = $('div#main > div:last');
                         $('<h1>').text(tour.name).appendTo(tourDiv); 
                         $('<p>').text("lokacja: " + tour.location).appendTo(tourDiv);
                         $('<p>').text("cena: " + tour.price + " zł").appendTo(tourDiv);
@@ -33,21 +32,20 @@ and open the template in the editor.
                         $('<div>').text("Wyświetl więcej informacji").attr('id', tour.id).appendTo(tourDiv).click(function(){
                             if (moreInfo){
                                 moreInfo = false;
-                                console.log("." + tour.id);
+                                //console.log("." + tour.id);
                                 $("." + tour.id).remove();
                                 $("#" + tour.id).text("Wyświetl więcej informacji");
                             } else {
                                 moreInfo = true;
                                 $("#" + tour.id).text("Schowaj więcej informacji");
                                 $('<div>').attr('class', tour.id).appendTo(this);
-                                var divId = document.getElementsByClassName(tour.id);
+                                var divId = $("." + tour.id);
                                 $('<p>').text(tour.description).attr('class', tour.id).appendTo(divId);
                             }
                         });  
                     });
                 });
             }
-            // id="tour"
             $(document).ready(function(){
                loadTours(); 
             });
